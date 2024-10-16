@@ -55,12 +55,12 @@ bufferIndex = 0
 font = cv2.FONT_HERSHEY_SIMPLEX
 loadingTextLocation = (20, 30)
 bpmTextLocation = (videoWidth//2 + 5, 30)
-truthTextLocation = (videoWidth//2 + 10, 50)
-falseTextLocation = (videoWidth//2 + 13, 50)
+truthTextLocation = (videoWidth//2 - 25, 50)
+falseTextLocation = (videoWidth//2 - 25, 50)
 
 fontScale = 1
 
-tffontScale = 2
+tffontScale = 3
 
 fontColor = (0,0,0)
 truthfontColor = (0,255,0)
@@ -126,11 +126,11 @@ while (True):
     bufferIndex = (bufferIndex + 1) % bufferSize
 
     def checkPulseTF():
-        if bpmBuffer.mean() < 75:
+        if bpmBuffer.mean() < 73:
             print("Truth!")
             cv2.putText(frame, "True!", truthTextLocation, font, tffontScale, truthfontColor, lineType)
 
-        if bpmBuffer.mean() >= 76:
+        if bpmBuffer.mean() >= 74:
             print("False!")
             cv2.putText(frame, "False!", falseTextLocation, font, tffontScale, falsefontColor, lineType)
 
@@ -139,7 +139,7 @@ while (True):
     if i > bpmBufferSize:
         cv2.putText(frame, "BPM: %d" % bpmBuffer.mean(), bpmTextLocation, font, fontScale, fontColor, lineType)
 
-        if cv2.waitKey() & 0xFF == ord('c'):
+        if cv2.waitKey(1) & 0xFF == ord('c'):
             checkPulseTF()
 
         if cv2.waitKey(1) & 0xFF == ord('t'):
@@ -153,12 +153,6 @@ while (True):
         cv2.putText(frame, "Calculating BPM...", loadingTextLocation, font, fontScale, fontColor, lineType)
 
     outputVideoWriter.write(frame)
-
-
-
-
-
-
 
 
     if len(sys.argv) != 2:
