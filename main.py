@@ -55,8 +55,8 @@ bufferIndex = 0
 font = cv2.FONT_HERSHEY_SIMPLEX
 loadingTextLocation = (20, 30)
 bpmTextLocation = (videoWidth//2 + 5, 30)
-truthTextLocation = (videoWidth//2 - 25, 50)
-falseTextLocation = (videoWidth//2 - 25, 50)
+truthTextLocation = (videoWidth//2 + 55, 150)
+falseTextLocation = (videoWidth//2 + 55, 150)
 
 fontScale = 1
 
@@ -126,13 +126,13 @@ while (True):
     bufferIndex = (bufferIndex + 1) % bufferSize
 
     def checkPulseTF():
-        if bpmBuffer.mean() < 73:
+        if bpmBuffer.mean() < 77:
             print("Truth!")
-            cv2.putText(frame, "True!", truthTextLocation, font, tffontScale, truthfontColor, lineType)
+            cv2.putText(frame, "True!", truthTextLocation, font, tffontScale, truthfontColor, lineType*3)
 
-        if bpmBuffer.mean() >= 74:
+        if bpmBuffer.mean() >= 77:
             print("False!")
-            cv2.putText(frame, "False!", falseTextLocation, font, tffontScale, falsefontColor, lineType)
+            cv2.putText(frame, "False!", falseTextLocation, font, tffontScale, falsefontColor, lineType*3)
 
     frame[videoHeight//2:realHeight-videoHeight//2, videoWidth//2:realWidth-videoWidth//2, :] = outputFrame
     cv2.rectangle(frame, (videoWidth//2 , videoHeight//2), (realWidth-videoWidth//2, realHeight-videoHeight//2), boxColor, boxWeight)
@@ -144,24 +144,21 @@ while (True):
 
         if cv2.waitKey(1) & 0xFF == ord('t'):
             print("True!")
-            cv2.putText(frame, "True!", truthTextLocation, font, tffontScale, truthfontColor, lineType)
+            cv2.putText(frame, "True!", truthTextLocation, font, tffontScale, truthfontColor, lineType*3)
 
         if cv2.waitKey(1) & 0xFF == ord('f'):
             print("False!")
-            cv2.putText(frame, "False!", falseTextLocation, font, tffontScale, falsefontColor, lineType)
+            cv2.putText(frame, "False!", falseTextLocation, font, tffontScale, falsefontColor, lineType*3)
     else:
         cv2.putText(frame, "Calculating BPM...", loadingTextLocation, font, fontScale, fontColor, lineType)
 
     outputVideoWriter.write(frame)
-
 
     if len(sys.argv) != 2:
         cv2.imshow("Webcam Heart Rate Monitor", frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
-
 
 webcam.release()
 cv2.destroyAllWindows()
